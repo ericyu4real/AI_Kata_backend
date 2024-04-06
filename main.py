@@ -79,7 +79,8 @@ def save_message(text_message):
     
     # Insert the message document into the collection
     messages_collection.insert_one(message_document)
-    print("Message saved to MongoDB")
+    return
+    # print("Message saved to MongoDB")
 
 
 if __name__ == '__main__':
