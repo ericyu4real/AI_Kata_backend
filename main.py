@@ -65,7 +65,7 @@ def query():
 
 
 def save_message(text_message):
-    toronto_time = datetime.now(pytz.timezone("America/Toronto")).strftime("%m/%d/%Y, %H:%M:%S")
+    toronto_time = datetime.now(pytz.timezone("America/Toronto")).strftime("%m/%d/%Y %I:%M:%S %p")
     # user_ip = request.remote_addr  # Get user's IP address
 
     message_document = {
