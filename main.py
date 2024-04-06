@@ -83,7 +83,7 @@ def save_message(text_message):
             'datetime': toronto_time, 
             'message': text_message
         }
-        messages_collection = client.chatbot.messages
+        messages_collection = client['chatbot']['messages']
         messages_collection.insert_one(message_document)
         return True
     except Exception as e:
