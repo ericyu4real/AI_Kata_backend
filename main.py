@@ -15,12 +15,18 @@ import pytz
 app = Flask(__name__)
 CORS(app)
 
-path = 'db.json'  # Path to your JSON file
-
 # read env variables
 openaikey = os.environ['OPENAI_API_KEY']
-# botName = os.environ['botName']
 
+#mangodb setup
+from pymongo.mongo_client import MongoClient
+from pymongo.server_api import ServerApi
+
+uri = "mongodb+srv://ericyu:48nqSONXdVfvrQCf@chat.dtdfazx.mongodb.net/?retryWrites=true&w=majority&appName=Chat"
+client = MongoClient(uri, server_api=ServerApi('1'))
+
+
+#vectordb setup
 embeddings = OpenAIEmbeddings()
 db = FAISS.load_local("faiss_index",
                       embeddings,
@@ -54,27 +60,26 @@ def query():
   if query == 'default_value':
     return "Please enter a query."
   result = qa({"question": query, "chat_history": []})
-  save_message("User: " + query + "; Bot: " + result['answer'])
+  save_message("User: " + query + ";\nBot: " + result['answer'])
   return jsonify({'response': result['answer']})
 
 
 def save_message(text_message):
-  # Check if the file exists, read the existing data if it does, else start with an empty list
-  if os.path.exists(path):
-    with open(path, 'r') as file:
-      data = file.read()
-      messages = json.loads(data) if data else []
-  else:
-    messages = []
-  toronto_time = datetime.now(
-      pytz.timezone("America/Toronto")).strftime("%m/%d/%Y %I:%M:%S %p")
-  # Append the new message
-  messages.append({'datetime': toronto_time, 'message': text_message})
+    toronto_time = datetime.now(pytz.timezone("America/Toronto")).strftime("%m/%d/%Y, %H:%M:%S")
+    user_ip = request.remote_addr  # Get user's IP address
 
-  # Write the updated messages list back to the file
-  with open(path, 'w') as file:
-    json.dump(messages, file, indent=2)
-    print("Message saved to messages.json")
+    message_document = {
+        'user_ip': user_ip,
+        'datetime': toronto_time, 
+        'message': text_message
+    }
+
+    # Accessing the 'chat' database and then the 'messages' collection
+    messages_collection = client['chat']['messages']
+    
+    # Insert the message document into the collection
+    messages_collection.insert_one(message_document)
+    print("Message saved to MongoDB")
 
 
 if __name__ == '__main__':
