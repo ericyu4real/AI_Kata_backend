@@ -24,7 +24,7 @@ from pymongo.server_api import ServerApi
 
 uri = "mongodb+srv://ericyu:48nqSONXdVfvrQCf@chat.dtdfazx.mongodb.net/?retryWrites=true&w=majority&appName=Chat"
 client = MongoClient(uri, server_api=ServerApi('1'))
-
+db = client.chatbot
 
 #vectordb setup
 embeddings = OpenAIEmbeddings()
@@ -75,7 +75,7 @@ def save_message(text_message):
     }
 
     # Accessing the 'chat' database and then the 'messages' collection
-    messages_collection = client['chatbot']['messages']
+    messages_collection = db['messages']
     
     # Insert the message document into the collection
     messages_collection.insert_one(message_document)
