@@ -75,7 +75,7 @@ def save_message(text_message):
     }
 
     # Accessing the 'chat' database and then the 'messages' collection
-    messages_collection = client['chat']['messages']
+    messages_collection = client['chatbot']['messages']
     
     # Insert the message document into the collection
     messages_collection.insert_one(message_document)
