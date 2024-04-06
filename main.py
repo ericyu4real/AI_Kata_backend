@@ -60,16 +60,16 @@ def query():
   if query == 'default_value':
     return "Please enter a query."
   result = qa({"question": query, "chat_history": []})
-  # save_message("User: " + query + ";\nBot: " + result['answer'])
+  save_message("User: " + query + ";\nBot: " + result['answer'])
   return jsonify({'response': result['answer']})
 
 
 def save_message(text_message):
     toronto_time = datetime.now(pytz.timezone("America/Toronto")).strftime("%m/%d/%Y, %H:%M:%S")
-    user_ip = request.remote_addr  # Get user's IP address
+    # user_ip = request.remote_addr  # Get user's IP address
 
     message_document = {
-        'user_ip': user_ip,
+        # 'user_ip': user_ip,
         'datetime': toronto_time, 
         'message': text_message
     }
