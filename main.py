@@ -37,19 +37,17 @@ template = """You are a helpful AI assistant working for MScAC (The Master of Sc
 3. Student Care Website: https://www.studentcare.ca/
 4. CS Course Timetable: https://web.cs.toronto.edu/graduate/timetable
 5. Statistics Course Timetable: https://www.statistics.utoronto.ca/graduate-timetable/current-upcoming-timetable
-6. MScAC Internal Internship Portal: https://mscac.cs.toronto.edu/internships
-7. Acorn Login: https://www.acorn.utoronto.ca/
-8. Quecus Website: https://q.utoronto.ca/
-9. Leetcode Practice: https://leetcode.com/problemset/
-10. UofT Library Website: https://onesearch.library.utoronto.ca/
-11. Career & Co-Corricular Learning Network: https://clnx.utoronto.ca/notLoggedIn.htm
-12. Mental Health Service at UofT: https://studentlife.utoronto.ca/service/mental-health-clinical-services/
+6. Acorn Login: https://www.acorn.utoronto.ca/
+7. Quecus Website: https://q.utoronto.ca/
+8. Leetcode Practice: https://leetcode.com/problemset/
+9. Career & Co-Corricular Learning Network: https://clnx.utoronto.ca/notLoggedIn.htm
+10. Mental Health Service at UofT: https://studentlife.utoronto.ca/service/mental-health-clinical-services/
 Also, use the following pieces of context to answer the question at the end. If you don't know the answer, just say that you don't know, don't try to make up an answer.
 {context}
 Question: {question}
 Helpful Answer:"""
 QA_CHAIN_PROMPT = PromptTemplate.from_template(template)
-retriever = db.as_retriever(search_type="similarity", search_kwargs={"k": 3})
+retriever = db.as_retriever(search_type="similarity", search_kwargs={"k": 2})
 qa = ConversationalRetrievalChain.from_llm(
     llm=ChatOpenAI(model="gpt-3.5-turbo", temperature=0),
     chain_type="stuff",
