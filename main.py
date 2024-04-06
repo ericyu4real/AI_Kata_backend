@@ -65,22 +65,28 @@ def query():
 
 
 def save_message(text_message):
-    toronto_time = datetime.now(pytz.timezone("America/Toronto")).strftime("%m/%d/%Y %I:%M:%S %p")
-    # user_ip = request.remote_addr  # Get user's IP address
+    try:
 
-    message_document = {
-        # 'user_ip': user_ip,
-        'datetime': toronto_time, 
-        'message': text_message
-    }
+        if text_message:
+            toronto_time = datetime.now(pytz.timezone("America/Toronto")).strftime("%m/%d/%Y %I:%M:%S %p")
+            # user_ip = request.remote_addr  # Get user's IP address
+            message_document = {
+                # 'user_ip': user_ip,
+                'datetime': toronto_time, 
+                'message': text_message
+                }
+            # Accessing the 'chat' database and then the 'messages' collection
+            messages_collection = db['messages']
+            
+            # Insert the message document into the collection
+            messages_collection.insert_one(message_document)
 
-    # Accessing the 'chat' database and then the 'messages' collection
-    messages_collection = db['messages']
+            return "Message added successfully", 200
+        else:
+            return "Invalid request. Please provide a 'message' in form data.", 400
+    except Exception as e:
+        return "An error occurred. Please try again.", 500
     
-    # Insert the message document into the collection
-    messages_collection.insert_one(message_document)
-    return
-    # print("Message saved to MongoDB")
 
 
 if __name__ == '__main__':
