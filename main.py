@@ -60,7 +60,7 @@ def query():
   if query == 'default_value':
     return "Please enter a query."
   result = qa({"question": query, "chat_history": []})
-  save_message("User: " + query + ";\nBot: " + result['answer'])
+  # save_message("User: " + query + ";\nBot: " + result['answer'])
   return jsonify({'response': result['answer']})
 
 
