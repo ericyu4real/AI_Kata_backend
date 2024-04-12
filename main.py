@@ -80,7 +80,10 @@ def query():
         if result['answer']:
             success = save_message(f"User: {query_text}; Bot: {result['answer']}")
             if success:
-                return jsonify({'response': result['answer']}), 200
+                return jsonify({
+                    'response': result['answer'],
+                    'chat_history': chat_history  # Include chat history in the response
+                }), 200
             else:
                 return jsonify({'error': "Failed to connect with mongodb."}), 500
         else:
