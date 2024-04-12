@@ -76,7 +76,7 @@ def query():
         else:
             chat_history = []
 
-        result = qa({"question": query_text, "chat_history": chat_history})
+        result = qa({"question": query_text, "chat_history": []})
         if result['answer']:
             success = save_message(f"User: {query_text}; Bot: {result['answer']}")
             if success:
