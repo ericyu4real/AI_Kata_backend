@@ -72,7 +72,7 @@ def query():
         
         if chat_history_json:
             chat_history_raw = json.loads(chat_history_json)
-            chat_history = [(entry['user_message']['body'], entry['bot_message']['body']) for entry in chat_history_raw]
+            chat_history = [chat_history_json]
         else:
             chat_history = []
 
