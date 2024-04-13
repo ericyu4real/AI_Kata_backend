@@ -43,6 +43,7 @@ Career & Co-Corricular Learning Network: https://clnx.utoronto.ca/notLoggedIn.ht
 Mental Health Service at UofT: https://studentlife.utoronto.ca/service/mental-health-clinical-services/
 Also, use the following pieces of context to answer the question at the end. If you don't know the answer, just say that you don't know, don't try to make up an answer.
 {context}
+Chat History: {chat_history}
 Question: {question}
 Helpful Answer:"""
 QA_CHAIN_PROMPT = PromptTemplate.from_template(template)
@@ -75,7 +76,7 @@ def query():
         else:
             # Parse the chat history from JSON and transform it into the desired format
             chat_history_raw = json.loads(chat_history_json)
-            chat_history = [("user:"+entry['user_message']['body'], "Claire:"+entry['bot_message']['body']) for entry in chat_history_raw]
+            chat_history = [(entry['user_message']['body'], entry['bot_message']['body']) for entry in chat_history_raw]
             print("Yessssirrrrrrrr", chat_history)
 
         result = qa({"question": query_text, "chat_history": chat_history})
