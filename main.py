@@ -83,7 +83,7 @@ def query():
             if success:
                 return jsonify({
                     'response': result['answer'],
-                    'chat_history': chat_history_json is None or chat_history_json == "" # Include chat history in the response
+                    'chat_history': str(type(chat_history_json)) # Include chat history in the response
                 }), 200
             else:
                 return jsonify({'error': "Failed to connect with mongodb."}), 500
