@@ -70,11 +70,12 @@ def query():
         if not query_text:
             return jsonify({'error': "Please enter a query."}), 400
         
-        if chat_history_json:
+        if chat_history_json is None or chat_history_json == "":
+            chat_history = []
+        else:
+            # Parse the chat history from JSON and transform it into the desired format
             chat_history_raw = json.loads(chat_history_json)
             chat_history = [(entry['user_message']['body'], entry['bot_message']['body']) for entry in chat_history_raw]
-        else:
-            chat_history = []
 
         result = qa({"question": query_text, "chat_history": []})
         if result['answer']:
@@ -82,7 +83,7 @@ def query():
             if success:
                 return jsonify({
                     'response': result['answer'],
-                    'chat_history': chat_history_json==True  # Include chat history in the response
+                    'chat_history': chat_history # Include chat history in the response
                 }), 200
             else:
                 return jsonify({'error': "Failed to connect with mongodb."}), 500
