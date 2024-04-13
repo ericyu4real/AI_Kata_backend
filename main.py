@@ -75,7 +75,7 @@ def query():
         else:
             # Parse the chat history from JSON and transform it into the desired format
             chat_history_raw = json.loads(chat_history_json)
-            chat_history = [(entry['user_message']['body'], entry['bot_message']['body']) for entry in chat_history_raw]
+            chat_history = [("user:"+entry['user_message']['body'], "Claire:"+entry['bot_message']['body']) for entry in chat_history_raw]
             print("Yessssirrrrrrrr", chat_history)
 
         result = qa({"question": query_text, "chat_history": chat_history})
