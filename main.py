@@ -59,7 +59,7 @@ qa = ConversationalRetrievalChain.from_llm(
 
 @app.route('/')
 def index():
-  return "This is MScAC chatbot's backend. Please do not share this with anyone. Thank you."
+  return "This is MScAC chatbot's backend. Please do not share this with anyone."
 
 
 @app.route('/query', methods=['POST'])
@@ -76,7 +76,7 @@ def query():
         else:
             chat_history = []
 
-        result = qa({"question": query_text, "chat_history": []})
+        result = qa({"question": query_text, "chat_history": [chat_history]})
         if result['answer']:
             success = save_message(f"User: {query_text}; Bot: {result['answer']}")
             if success:
