@@ -76,15 +76,14 @@ def query():
             # Parse the chat history from JSON and transform it into the desired format
             chat_history_raw = json.loads(chat_history_json)
             chat_history = [(entry['user_message']['body'], entry['bot_message']['body']) for entry in chat_history_raw]
-            print("Yessssirrrrrrrr", chat_history_raw, type(chat_history_raw), type(chat_history),chat_history)
+            # print("Yessssirrrrrrrr", chat_history_raw, type(chat_history_raw), type(chat_history),chat_history)
 
-        result = qa({"question": query_text, "chat_history": []})
+        result = qa({"question": query_text, "chat_history": chat_history})
         if result['answer']:
             success = save_message(f"User: {query_text}; Bot: {result['answer']}")
             if success:
                 return jsonify({
-                    'response': result['answer'],
-                    'chat_history': str(type(chat_history_json)) # Include chat history in the response
+                    'response': result['answer']
                 }), 200
             else:
                 return jsonify({'error': "Failed to connect with mongodb."}), 500
