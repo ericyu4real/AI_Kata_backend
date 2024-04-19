@@ -93,10 +93,11 @@ def save_message(text_message):
     try:
         toronto_time = datetime.now(pytz.timezone("America/Toronto"))
         user_ip = request.remote_addr 
-        message_document = {
+        message_document = { 
+            'torontotime': toronto_time.strftime("%Y-%m-%d %H:%M:%S"),
+            'message': text_message,
             'user_ip': user_ip,
-            'datetime': toronto_time, 
-            'message': text_message
+            'datetime': toronto_time
         }
         messages_collection = client['chatbot']['messages']
         messages_collection.insert_one(message_document)
