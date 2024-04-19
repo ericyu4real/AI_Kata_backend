@@ -97,7 +97,7 @@ def save_message(text_message):
             'torontotime': toronto_time.strftime("%Y-%m-%d %H:%M:%S"),
             'message': text_message,
             'user_ip': user_ip,
-            'datetime': toronto_time
+            'UTCdatetime': toronto_time
         }
         messages_collection = client['chatbot']['messages']
         messages_collection.insert_one(message_document)
