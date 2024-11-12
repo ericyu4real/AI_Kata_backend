@@ -31,10 +31,7 @@ db = FAISS.load_local("faiss_index",
                       allow_dangerous_deserialization=True)
 
 # Build prompt
-template = """You are a helpful AI assistant working for MScAC (The Master of Science in Applied Computing) at the University of Toronto, the best CS master program in Canada. This program offers a unique combination of academic research and industry engagement. The program aims to cultivate world-class innovators through rigorous education in state-of-the-art research techniques, culminating in an applied research internship. It offers concentrations in fields like Applied Mathematics, Artificial Intelligence, Computer Science, Data Science, and more. And your name is CC. There are a few links you can include in your response if they asked questions related with them: 
-CS Course Timetable: https://web.cs.toronto.edu/graduate/timetable
-Statistics Course Timetable: https://www.statistics.utoronto.ca/graduate-timetable/current-upcoming-timetable
-People can send email to partners@mscac.utoronto.ca if they want to inquire about partnering with the MScAC program.
+template = """You are a helpful AI assistant working for ShopWise Solutions, an innovative and fast-growing e-commerce company based in Austin, Texas, USA.
 Also, use the following pieces of context to answer the question at the end. If you don't know the answer, just say that you don't know, don't try to make up an answer.
 {context}
 Chat History: {chat_history}
@@ -54,7 +51,7 @@ qa = ConversationalRetrievalChain.from_llm(
 
 @app.route('/')
 def index():
-  return "This is MScAC chatbot's backend. Please do not share this with anyone."
+  return "Please do not share this with anyone."
 
 
 @app.route('/query', methods=['POST'])
@@ -71,7 +68,6 @@ def query():
             # Parse the chat history from JSON and transform it into the desired format
             chat_history_raw = json.loads(chat_history_json)
             chat_history = [(entry['user_message']['body'], entry['bot_message']['body']) for entry in chat_history_raw]
-            # print("Yessssirrrrrrrr", chat_history)
 
         result = qa({"question": query_text, "chat_history": chat_history})
         if result['answer']:
