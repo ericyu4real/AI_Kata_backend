@@ -1,11 +1,12 @@
 from flask import Flask, request
-from langchain.chains import RetrievalQA, ConversationalRetrievalChain
+from langchain.chains import ConversationalRetrievalChain
 from langchain.memory import ConversationBufferMemory
 from langchain_community.chat_models import ChatOpenAI
 from langchain.prompts import PromptTemplate
 from langchain_community.vectorstores import FAISS
 from langchain_openai import OpenAIEmbeddings
 import os
+from dotenv import load_dotenv
 from flask_cors import CORS
 from flask import jsonify
 import json
@@ -16,13 +17,15 @@ app = Flask(__name__)
 CORS(app)
 
 # read env variables
-openaikey = os.environ['OPENAI_API_KEY']
-uri = os.environ['mongodb']
+load_dotenv()
+openaikey = os.getenv('OPENAI_API_KEY')
+# openaikey = os.environ['OPENAI_API_KEY']
+# uri = os.environ['mongodb']
 
 #mangodb setup
-from pymongo.mongo_client import MongoClient
-from pymongo.server_api import ServerApi
-client = MongoClient(uri, server_api=ServerApi('1'))
+# from pymongo.mongo_client import MongoClient
+# from pymongo.server_api import ServerApi
+# client = MongoClient(uri, server_api=ServerApi('1'))
 
 #vectordb setup
 embeddings = OpenAIEmbeddings()
@@ -71,7 +74,7 @@ def query():
 
         result = qa({"question": query_text, "chat_history": chat_history})
         if result['answer']:
-            success = save_message(f"User: {query_text}; Bot: {result['answer']}")
+            success = True # save_message(f"User: {query_text}; Bot: {result['answer']}")
             if success:
                 return jsonify({
                     'response': result['answer']
