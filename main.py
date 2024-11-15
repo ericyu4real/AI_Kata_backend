@@ -43,7 +43,7 @@ Helpful Answer:"""
 QA_CHAIN_PROMPT = PromptTemplate.from_template(template)
 retriever = db.as_retriever(search_type="similarity", search_kwargs={"k": 3})
 qa = ConversationalRetrievalChain.from_llm(
-    llm=ChatOpenAI(model="gpt-3.5-turbo", temperature=0),
+    llm=ChatOpenAI(model="gpt-4o-mini", temperature=0),
     chain_type="stuff",
     combine_docs_chain_kwargs={"prompt": QA_CHAIN_PROMPT},
     retriever=retriever,
