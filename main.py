@@ -88,22 +88,22 @@ def query():
 
 
 
-def save_message(text_message):
-    try:
-        toronto_time = datetime.now(pytz.timezone("America/Toronto"))
-        user_ip = request.remote_addr 
-        message_document = { 
-            'torontotime': toronto_time.strftime("%Y-%m-%d %H:%M:%S"),
-            'message': text_message,
-            'user_ip': user_ip,
-            'UTCdatetime': toronto_time
-        }
-        messages_collection = client['chatbot']['messages']
-        messages_collection.insert_one(message_document)
-        return True
-    except Exception as e:
-        print("An error occurred: ", e)
-        return False
+# def save_message(text_message):
+#     try:
+#         toronto_time = datetime.now(pytz.timezone("America/Toronto"))
+#         user_ip = request.remote_addr 
+#         message_document = { 
+#             'torontotime': toronto_time.strftime("%Y-%m-%d %H:%M:%S"),
+#             'message': text_message,
+#             'user_ip': user_ip,
+#             'UTCdatetime': toronto_time
+#         }
+#         messages_collection = client['chatbot']['messages']
+#         messages_collection.insert_one(message_document)
+#         return True
+#     except Exception as e:
+#         print("An error occurred: ", e)
+#         return False
 
 
 if __name__ == '__main__':
