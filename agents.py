@@ -3,7 +3,7 @@ import pandas as pd
 import os
 
 # Initialize OpenAI client
-openaikey = os.getenv('OPENAI_API_KEY')
+openaikey = os.environ['OPENAI_API_KEY']
 client = openai.OpenAI(api_key=openaikey)
 
 # Load data into DataFrames
