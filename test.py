@@ -107,6 +107,9 @@ def get_chat_history():
 
     return jsonify({"chat_history": chat_history})
 
+@app.route('/')
+def index():
+  return "This is Velociraptor chatbot's backend. Please do not share this with anyone."
 
 # Run the Flask server
 if __name__ == "__main__":
