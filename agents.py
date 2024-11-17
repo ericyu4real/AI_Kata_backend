@@ -1,3 +1,15 @@
+import openai
+import pandas as pd
+import os
+
+# Initialize OpenAI client
+openaikey = os.getenv('OPENAI_API_KEY')
+client = openai.OpenAI(api_key=openaikey)
+
+# Load data into DataFrames
+orders_df = pd.read_excel("database/order_data.xlsx")
+products_df = pd.read_excel("database/product_data.xlsx")
+
 # Intent Detection Agent
 def detect_intent(chat_history):
     system_message = """

@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import openai
 import json
 import pandas as pd
@@ -6,13 +7,7 @@ from agents import detect_intent, retrieve_entities_with_llm, run_intent_query, 
 
 # Initialize Flask app
 app = Flask(__name__)
-
-# Initialize OpenAI client
-client = openai.OpenAI(api_key="YOUR_API_KEY")
-
-# Load data into DataFrames
-orders_df = pd.read_excel('/content/order_data.xlsx')
-products_df = pd.read_excel('/content/product_data.xlsx')
+CORS(app) 
 
 # Load user info from a JSON file
 user_info_path = 'user_info.json'
@@ -37,19 +32,19 @@ def save_user_info(data):
 # Endpoint to handle chat interactions
 @app.route('/chat', methods=['POST'])
 def chat():
-    data = request.get_json()
-    username = data.get('username')
-    user_message = data.get('message')
+    username = request.form.get('username')
+    user_message = request.form.get('message')
 
     # Load user chat history from user_info.json
     user_data = load_user_info()
 
     # Initialize chat history if user is new
-    if username not in user_data:
+    if username not in user_data or not user_data[username]:
         user_data[username] = [{"role": "assistant", "content": "Chatbot: Hello! How can I assist you today?"}]
+    user_data[username].append({"role": "user", "content": user_message})
+    save_user_info(user_data)
 
     chat_history = user_data[username]
-    chat_history.append({"role": "user", "content": user_message})
 
     # Step 1: Intent Detection
     intent = detect_intent(chat_history)
@@ -85,8 +80,6 @@ def chat():
     # Step 4: Response Generation
     final_response = generate_rag_response(retrieved_context, chat_history)
     chat_history.append({"role": "assistant", "content": final_response})
-
-    # Save updated chat history
     user_data[username] = chat_history
     save_user_info(user_data)
 
@@ -95,15 +88,25 @@ def chat():
 # Endpoint to handle ending the session
 @app.route('/end_session', methods=['POST'])
 def end_session():
-    data = request.get_json()
-    username = data.get('username')
+    username = request.form.get('username')
 
     user_data = load_user_info()
     if username in user_data:
-        del user_data[username]
+        user_data[username] = []
 
     save_user_info(user_data)
     return jsonify({"message": "Session ended and chat history cleared."})
+
+# Endpoint to handle getting chat history
+@app.route('/get_chat_history', methods=['POST'])
+def get_chat_history():
+    username = request.form.get('username')
+
+    user_data = load_user_info()
+    chat_history = user_data.get(username, [])
+
+    return jsonify({"chat_history": chat_history})
+
 
 # Run the Flask server
 if __name__ == "__main__":

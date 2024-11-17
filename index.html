@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopWise Solutions Chatbot</title>
+</head>
+
+<body>
+    <h2>Welcome to ShopWise Solutions Chatbot</h2>
+    <div id="chatbox">
+        <div id="messages"></div>
+    </div>
+    <input type="text" id="userInput" placeholder="Type your message here...">
+    <button onclick="sendMessage()">Send</button>
+    <button onclick="endSession()">End Session</button>
+
+    <script>
+        let username = prompt("Enter your username:");
+        if (!username) {
+            username = "guest_" + Math.floor(Math.random() * 1000);
+        }
+
+        // Load chat history on page load
+        loadChatHistory();
+
+        // Function to load chat history
+        async function loadChatHistory() {
+            const messagesDiv = document.getElementById('messages');
+            messagesDiv.innerHTML = ''; // Clear any existing messages
+
+            const formData = new FormData();
+            formData.append('username', username);
+
+            try {
+                const response = await fetch('http://127.0.0.1:5000/get_chat_history', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+                const chatHistory = data.chat_history || [];
+
+                chatHistory.forEach(message => {
+                    let messageClass = message.role === "user" ? "user-message" : "bot-message";
+                    messagesDiv.innerHTML += `<p><strong>${message.role}:</strong> ${message.content}</p>`;
+                });
+
+                // Scroll to the bottom of the chatbox to show the latest messages
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            } catch (error) {
+                console.error("Error loading chat history:", error);
+            }
+        }
+
+        // Function to send message
+        async function sendMessage() {
+            const userMessage = document.getElementById('userInput').value;
+            if (userMessage.trim() === "") return;
+
+            const messagesDiv = document.getElementById('messages');
+            messagesDiv.innerHTML += `<p><strong>You:</strong> ${userMessage}</p>`;
+
+            // Prepare form data for sending to backend
+            const formData = new FormData();
+            formData.append('username', username);
+            formData.append('message', userMessage);
+
+            try {
+                const response = await fetch('http://127.0.0.1:5000/chat', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+                messagesDiv.innerHTML += `<p><strong>Chatbot:</strong> ${data.response}</p>`;
+                document.getElementById('userInput').value = "";
+
+                // Scroll to the bottom of the chatbox to show the latest messages
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        }
+
+        // Function to end session
+        async function endSession() {
+            const formData = new FormData();
+            formData.append('username', username);
+
+            try {
+                const response = await fetch('http://127.0.0.1:5000/end_session', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+                alert(data.message);
+
+                // Clear chat history and restart with new user prompt
+                document.getElementById('messages').innerHTML = "";
+                username = prompt("Enter your username:");
+                if (!username) {
+                    username = "guest_" + Math.floor(Math.random() * 1000);
+                }
+                loadChatHistory();
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        }
+    </script>
+</body>
+
+</html>
