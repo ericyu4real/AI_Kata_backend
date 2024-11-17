@@ -3,6 +3,7 @@ from flask_cors import CORS
 import openai
 import json
 import pandas as pd
+import os
 from agents import detect_intent, retrieve_entities_with_llm, run_intent_query, generate_rag_response
 
 # Initialize Flask app
@@ -112,7 +113,8 @@ def index():
   return "This is Velociraptor chatbot's backend. Please do not share this with anyone."
 
 # Run the Flask server
-if __name__ == "__main__":
-    app.run(port=5000, debug=True)
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
 
 # Include your existing functions here for detect_intent, retrieve_entities_with_llm, run_intent_query, and generate_rag_response
