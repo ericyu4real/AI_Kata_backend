@@ -1,4 +1,3 @@
 First step: install dependencies - pip install -r requirements.txt
 Second step: run main.py
 Third: download postman, add a post method and link to your ip: https://velociraptor-e9d29c6f39ce.herokuapp.com/
-Last but not least: add a variable named "query" in the body, asking anything you want and press "send"
