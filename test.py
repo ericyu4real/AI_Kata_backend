@@ -13,10 +13,11 @@ CORS(app)
 # Load user info from a JSON file
 user_info_path = 'user_info.json'
 intent_options = [
-    "order_retrieval",
-    "product_retrieval",
-    "personal_order_status",
-    "compare_products"
+    "order_info",
+    "product_info",
+    "compare_products",
+    "product_recommendation",
+    "joined_query"
 ]
 
 def load_user_info():
