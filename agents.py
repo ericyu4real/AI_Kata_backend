@@ -12,19 +12,6 @@ products_df = pd.read_excel("database/product_data.xlsx")
 
 # Intent Detection Agent
 def detect_intent(chat_history):
-    # system_message = """
-    # You are a helpful AI assistant working for ShopWise Solutions, an innovative and fast-growing e-commerce company based in Austin, Texas, USA. You are tasked with detecting the user's intent. The chat history includes both user and assistant messages.
-    # Prerequisites for defining a clear intent:
-    # 1. The user's query must match one of the following intents:
-    # - order_retrieval: The user wants specific information about an order (must include an Order ID).
-    # - product_retrieval: The user wants specific information about a product (must include a Product ID).
-    # - personal_order_status: The user wants to know about their orders (must include a Customer ID).
-    # - compare_products: The user wants to compare two products (must include names of both products).
-    # 2. If the intent is unclear or required information is missing, ask a follow-up question to clarify the user's query.
-    # 3. Always respond with one of the following:
-    #   - A follow-up question (if clarification is needed).
-    #   - The detected intent name in one word (order_retrieval, product_retrieval, personal_order_status, compare_products).
-    # """
     system_message = """
     You are a helpful and detail-oriented AI assistant named Velociraptor working for ShopWise Solutions, a fast-growing e-commerce company based in Austin, Texas, USA. Your primary goal is to accurately determine the user's intent based on the conversation history. The chat history includes both user and assistant messages. Follow these prerequisites to ensure clarity and correctness in defining the intent:
 
@@ -68,25 +55,6 @@ def detect_intent(chat_history):
 
 # Entity Retrieval Agent
 def retrieve_entities_with_llm(intent, chat_history):
-    # system_message = f"""
-    # You are an assistant that extracts key information (entities) from user queries based on detected intent.
-
-    # User's Intent: {intent}
-
-    # If the intent is "order_retrieval", extract the order ID from the user's query. The order ID should be an integer.
-    # If the intent is "product_retrieval", extract the product ID from the user's query. The product ID should be an integer.
-    # If the intent is "personal_order_status", extract the customer ID from the user's query. The customer ID should be an integer.
-    # If the intent is "compare_products", extract the names of the products to be compared from the user's query.
-
-    # Always return the entities in the following JSON format:
-    # - For "order_retrieval": {{ "order_id": <integer or null if not found> }}
-    # - For "product_retrieval": {{ "product_id": <integer or null if not found> }}
-    # - For "personal_order_status": {{ "customer_id": <integer or null if not found> }}
-    # - For "compare_products": {{ "product_names": [<list of product names, or empty if not found>] }}
-
-    # Chat History so far:
-    # {chat_history}
-    # """
     system_message = f"""
     You are an assistant that extracts key information (entities) from user queries based on detected intent.
 
