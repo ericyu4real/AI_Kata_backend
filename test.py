@@ -49,7 +49,6 @@ def chat():
     if decision['action'] == 'use_sql_agent':
         # Call the SQL Query Agent
         sql_result = sql_query_agent(chat_history, user_message)
-        return jsonify({"response": sql_result})
         # Call the Third Agent for response generation
         response = rag_agent(user_message, chat_history, sql_result)
     elif decision['action'] == 'ask_clarification':
