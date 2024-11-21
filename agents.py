@@ -65,7 +65,7 @@ def decide_sql_capability(chat_history, user_query):
     system_message = f"""
     You are a smart assistant determining the next action for a user's query. Based on the schema, example rows, and chat history provided, decide the following:
     
-    1. Can the SQL agent handle this query and does this request need to SQL agent? If yes, output 'use_sql_agent'.
+    1. Does this request need to use SQL agent and can the SQL agent handle this query? If both yes, output 'use_sql_agent'.
     2. If the query requires more information to be handled by the SQL agent, output 'ask_clarification' and suggest a clarification question.
     3. If the query can be answered directly using the current context, output 'respond_directly' and provide the response.
 
