@@ -44,14 +44,13 @@ def chat():
 
     # Step 1: Decide capability of SQL agent or alternative action
     decision = decide_sql_capability(chat_history, user_message)
-    return jsonify({"response": decision})
 
     # Handle the decision
     if decision['action'] == 'use_sql_agent':
         # Call the SQL Query Agent
         sql_result = sql_query_agent(chat_history, user_message)
         # Call the Third Agent for response generation
-        response = rag_agent(user_message, chat_history, sql_result)
+        response = sql_result
     elif decision['action'] == 'ask_clarification':
         response = decision['clarification']
     elif decision['action'] == 'respond_directly':
