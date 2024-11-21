@@ -151,7 +151,7 @@ def sql_query_agent(chat_history, user_query):
     try:
         with engine.connect() as connection:
             result_df = pd.read_sql_query(sql_query, connection)
-            return result_df
+            return sql_query
     except Exception as e:
         return f"Error executing query: {str(e)}"
 
