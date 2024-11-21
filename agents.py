@@ -65,9 +65,15 @@ def decide_sql_capability(chat_history, user_query):
     system_message = f"""
     You are a smart assistant determining the next action for a user's query. Based on the schema, example rows, and chat history provided, decide the following:
     
+    Instructions:
     1. Does this request need to use SQL agent and can the SQL agent handle this query? If both yes, output 'use_sql_agent'.
     2. If the query requires more information to be handled by the SQL agent, output 'ask_clarification' and suggest a clarification question.
     3. If the query can be answered directly using the current context, output 'respond_directly' and provide the response.
+    4. Must always return a JSON object with the following keys:
+        - 'action': ('use_sql_agent', 'ask_clarification', or 'respond_directly')
+        - 'reason': A brief explanation of why this action was chosen.
+        - 'clarification': If 'ask_clarification', suggest a follow-up question to ask the user.
+        - 'response': If 'respond_directly', include the response to the user's query.
 
     Schema and Example Rows:
     {schema_info}
@@ -83,13 +89,6 @@ def decide_sql_capability(chat_history, user_query):
 
     User Query:
     {user_query}
-
-    Instructions:
-    - Must always return a JSON object with the following keys:
-        - 'action': ('use_sql_agent', 'ask_clarification', or 'respond_directly')
-        - 'reason': A brief explanation of why this action was chosen.
-        - 'clarification': If 'ask_clarification', suggest a follow-up question to ask the user.
-        - 'response': If 'respond_directly', include the response to the user's query.
     """
     response = client.chat.completions.create(
         model="gpt-4",
