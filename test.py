@@ -44,6 +44,7 @@ def chat():
 
     # Step 1: Decide capability of SQL agent or alternative action
     decision = decide_sql_capability(chat_history, user_message)
+    return jsonify({"response": decision})
 
     # Handle the decision
     if decision['action'] == 'use_sql_agent':

@@ -96,7 +96,7 @@ def decide_sql_capability(chat_history, user_query):
         max_tokens=300,
         temperature=0.0,
     )
-    return eval(response.choices[0].message.content.strip())
+    return response.choices[0].message.content.strip()
 
 # SQL Query Agent
 def sql_query_agent(chat_history, user_query):
