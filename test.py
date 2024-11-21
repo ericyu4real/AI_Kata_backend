@@ -35,7 +35,7 @@ def chat():
 
     # Initialize chat history for a new user
     if username not in user_data or not user_data[username]:
-        user_data[username] = [{"role": "assistant", "content": "Chatbot: Hello! How can I assist you today?"}]
+        user_data[username] = [{"role": "assistant", "content": "Hello! How can I assist you today?"}]
     chat_history = user_data[username]
 
     # Append the user's message to chat history
