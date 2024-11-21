@@ -179,6 +179,12 @@ def rag_agent(user_query, chat_history, retrieved_df):
     system_message = f"""
     You are an AI assistant tasked with generating a natural language response based on the user's query, chat history, and retrieved data.
 
+    Instructions:
+    - Analyze the chat history to understand what the user is asking for.
+    - Use the provided retrieved context to answer the user's question accurately.
+    - Only provide a response if the retrieved context includes enough information to answer the user's question.
+    - If the context is insufficient, just say you don't know.
+
     User Query:
     {user_query}
 
@@ -189,11 +195,7 @@ def rag_agent(user_query, chat_history, retrieved_df):
     {retrieved_context}
     {extra_message}
 
-    Instructions:
-    - Analyze the chat history to understand what the user is asking for.
-    - Use the provided retrieved context to answer the user's question accurately.
-    - Only provide a response if the retrieved context includes enough information to answer the user's question.
-    - If the context is insufficient, just say you don't know.
+    Your helpful answer:
     """
     response = client.chat.completions.create(
         model="gpt-4",
@@ -203,4 +205,4 @@ def rag_agent(user_query, chat_history, retrieved_df):
     )
 
     # Extract and return the natural language response
-    return response.choices[0].message.content.strip()
+    return retrieved_context
