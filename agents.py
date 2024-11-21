@@ -85,7 +85,7 @@ def decide_sql_capability(chat_history, user_query):
     {user_query}
 
     Instructions:
-    - Return a JSON object with the following keys:
+    - Must always return a JSON object with the following keys:
         - 'action': ('use_sql_agent', 'ask_clarification', or 'respond_directly')
         - 'reason': A brief explanation of why this action was chosen.
         - 'clarification': If 'ask_clarification', suggest a follow-up question to ask the user.
@@ -205,4 +205,4 @@ def rag_agent(user_query, chat_history, retrieved_df):
     )
 
     # Extract and return the natural language response
-    return retrieved_context
+    return response.choices[0].message.content.strip()
