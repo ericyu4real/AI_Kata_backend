@@ -49,11 +49,8 @@ def chat():
     if decision['action'] == 'use_sql_agent':
         # Call the SQL Query Agent
         sql_result = sql_query_agent(chat_history, user_message)
-        if isinstance(sql_result, pd.DataFrame):
-            # Call the Third Agent for response generation
-            response = rag_agent(user_message, chat_history, sql_result)
-        else:
-            response = sql_result  # Handle error messages
+        # Call the Third Agent for response generation
+        response = rag_agent(user_message, chat_history, sql_result)
     elif decision['action'] == 'ask_clarification':
         response = decision['clarification']
     elif decision['action'] == 'respond_directly':
