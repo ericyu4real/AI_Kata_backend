@@ -1,6 +1,6 @@
 # AI Kata Backend Chatbot Solution
 
-<img src="Flowchart.png" alt="alt text" width="300"/>
+<img src="Flowchart.png" alt="alt text" width="400"/>
 
 ## Interacting with the Chatbot
 
