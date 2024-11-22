@@ -91,7 +91,7 @@ def decide_sql_capability(chat_history, user_query):
     {user_query}
     """
     response = client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="gpt-4-turbo",
         messages=[{"role": "system", "content": system_message}],
         max_tokens=300,
         temperature=0.0,
@@ -135,7 +135,7 @@ def sql_query_agent(chat_history, user_query):
     {chat_history}
     """
     response = client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="gpt-4-turbo",
         messages=[{"role": "system", "content": system_message}],
         max_tokens=500,
         temperature=0.0,
@@ -197,7 +197,7 @@ def rag_agent(user_query, chat_history, retrieved_df):
     Your helpful answer:
     """
     response = client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="gpt-4-turbo",
         messages=[{"role": "system", "content": system_message}],
         max_tokens=500,
         temperature=0.0,
