@@ -143,7 +143,6 @@ def sql_query_agent(chat_history, user_query):
 
     # Extract the SQL query from the response
     sql_query = response.choices[0].message.content.strip()
-    # print("Generated SQL Query:\n", sql_query)
 
     # Execute the SQL query on the SQLite database
     engine = create_engine(f"sqlite:///{db_path}")
@@ -183,7 +182,7 @@ def rag_agent(user_query, chat_history, retrieved_df):
     - Use the provided retrieved context to answer the user's question accurately.
     - Only provide a response if the retrieved context includes enough information to answer the user's question.
     - If the context is insufficient, just say you don't know.
-    - You should format your responses using Markdown
+    - Format your answer using Markdown
 
     User Query:
     {user_query}
