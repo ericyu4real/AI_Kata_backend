@@ -69,7 +69,7 @@ def chat():
 
         return jsonify({"response": response})
     except Exception as e:
-        return jsonify({"response": f"An error occurred: {str(e)}"}), 500
+        return jsonify({"response": f"An error in the backend occurred: {str(e)}"}), 500
 
 # Endpoint to handle ending the session
 @app.route('/end_session', methods=['POST'])
