@@ -80,3 +80,7 @@ If you prefer to interact with the chatbot using API endpoints directly, you can
 
 ### Contact
 For any issues or queries, feel free to reach out through the repository's issue tracker.
+
+
+# The backend architecture flowchart
+![alt text](Flowchart.png)
