@@ -27,46 +27,49 @@ def save_user_info(data):
 # Endpoint to handle chat interactions
 @app.route('/chat', methods=['POST'])
 def chat():
-    username = request.form.get('username')
-    user_message = request.form.get('message')
+    try:
+        username = request.form.get('username')
+        user_message = request.form.get('message')
 
-    # Load chat history
-    user_data = load_user_info()
+        # Load chat history
+        user_data = load_user_info()
 
-    # Initialize chat history for a new user
-    if username not in user_data or not user_data[username]:
-        user_data[username] = [{"role": "assistant", "content": "Hello! How can I assist you today?"}]
-    chat_history = user_data[username]
+        # Initialize chat history for a new user
+        if username not in user_data or not user_data[username]:
+            user_data[username] = [{"role": "assistant", "content": "Hello! How can I assist you today?"}]
+        chat_history = user_data[username]
 
-    # Append the user's message to chat history
-    chat_history.append({"role": "user", "content": user_message})
-    save_user_info(user_data)
+        # Append the user's message to chat history
+        chat_history.append({"role": "user", "content": user_message})
+        save_user_info(user_data)
 
-    # Take only the 5 most recent messages for the agent
-    recent_history = chat_history[-10:]  # Limit to the last 5 messages
+        # Take only the 5 most recent messages for the agent
+        recent_history = chat_history[-10:]  # Limit to the last 5 messages
 
-    # Step 1: Decide capability of SQL agent or alternative action
-    decision = decide_sql_capability(recent_history, user_message)
+        # Step 1: Decide capability of SQL agent or alternative action
+        decision = decide_sql_capability(recent_history, user_message)
 
-    # Handle the decision
-    if decision['action'] == 'use_sql_agent':
-        # Call the SQL Query Agent
-        sql_result = sql_query_agent(recent_history, user_message)
-        # Call the Third Agent for response generation
-        response = rag_agent(user_message, recent_history, sql_result)
-    elif decision['action'] == 'ask_clarification':
-        response = decision['clarification']
-    elif decision['action'] == 'respond_directly':
-        response = decision['response']
-    else:
-        response = "I'm not sure how to handle your request. Could you clarify?"
+        # Handle the decision
+        if decision['action'] == 'use_sql_agent':
+            # Call the SQL Query Agent
+            sql_result = sql_query_agent(recent_history, user_message)
+            # Call the Third Agent for response generation
+            response = rag_agent(user_message, recent_history, sql_result)
+        elif decision['action'] == 'ask_clarification':
+            response = decision['clarification']
+        elif decision['action'] == 'respond_directly':
+            response = decision['response']
+        else:
+            response = "I'm not sure how to handle your request. Could you clarify?"
 
-    # Append the assistant's response to chat history
-    chat_history.append({"role": "assistant", "content": response})
-    user_data[username] = chat_history
-    save_user_info(user_data)
+        # Append the assistant's response to chat history
+        chat_history.append({"role": "assistant", "content": response})
+        user_data[username] = chat_history
+        save_user_info(user_data)
 
-    return jsonify({"response": response})
+        return jsonify({"response": response})
+    except Exception as e:
+        return jsonify({"response": f"An error occurred: {str(e)}"}), 500
 
 # Endpoint to handle ending the session
 @app.route('/end_session', methods=['POST'])
