@@ -1,2 +1,0 @@
-x=eval("""{"action": "use_sql_agent", "reason": "The user is asking to compare two products based on their Product IDs. This requires querying the 'products' table in the database to retrieve the details of the products with the given IDs.", "clarification": "", "response": ""}""")
-print(x)
