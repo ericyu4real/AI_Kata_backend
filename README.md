@@ -31,9 +31,9 @@ If you prefer to interact with the chatbot using API endpoints directly, you can
 ### Key Features
 1. **Three-Agent System**
    - The solution utilizes a modular three-agent system to effectively manage user queries:
-     - **Intent Recognition Agent**: This agent is responsible for understanding user intents based on the given input, ensuring that the request is correctly categorized.
-     - **Entity Retrieval Agent**: Extracts critical entities such as order numbers, product names, dates, and other pertinent details required to provide a proper response.
-     - **Response Generation Agent**: This agent combines the intent and extracted entities, along with prior conversation history, to generate a relevant, context-aware response.
+     - **Multi-action Agent**: This agent is responsible for understanding user intents based on the user query and chat history, and decides one of three actions next: transfer the task to SQL agent/answer directly/ask for clarification.
+     - **Text-to-SQL Agent**: Extracts critical entities such as order numbers, product names, dates, and other pertinent details and generate a proper sql query to handle user request.
+     - **RAG Agent**: This agent combines extracted data from database, along with prior conversation history, to generate a relevant, context-aware response.
 
 2. **Bias and Hallucination Prevention**
    - The chatbot includes robust mechanisms to prevent hallucinations by validating all information against the product database and avoiding the generation of fake or misleading information.
